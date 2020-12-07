@@ -36,7 +36,9 @@ use Olssonm\SwedishEntity\Company;
 // true
 ```
 
-Automatically detect the entity type:
+**Automatically detect the entity type:**
+
+*⚠️ If the `detect`-method fails, an `Olssonm\SwedishEntity\Exceptions\DetectException` will be thrown.*
 
 ```php
 use Olssonm\SwedishEntity\SwedishEntity;
@@ -48,13 +50,9 @@ var_dump(get_class($entity))
 
 ```
 
-⚠️ If the `detect`-method fails, a `Olssonm\SwedishEntity\Exceptions\DetectException` will be thrown, be sure to handle it.
-
 ### Formatting
 
-You may format the entitys number to your needs/liking.
-
-⚠️ Formatting an invalid entity will result in an exception.
+*⚠️ Formatting an invalid entity will result in an exception. You should make sure to validate it beforehand.*
 
 #### Person
 
@@ -122,7 +120,7 @@ $validator = Validator::make($request->all(), [
 | year      | Birthyear                 | string    |
 | month     | Birthmonth                | string    |
 | day       | Birthday                  | string    |
-| num       | The last four digits      | string    |
+| num       | The "last four digits"    | string    |
 | check     | The checksum verifier     | string    |
 | age       | Age                       | string    |
 | birthday  | Entitys birthday          | DateTime  |
