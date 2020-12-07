@@ -14,7 +14,7 @@ class SwedishEntityServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app['validator']->extend('entity', function ($attribute, $value, $parameters) {
+        $this->app['validator']->extend('entity', function($attribute, $value, $parameters) {
 
             $type = isset($parameters[0]) ? $parameters[0] : 'any';
 
