@@ -1,0 +1,39 @@
+name: Run tests
+
+on:
+  push:
+  schedule:
+      - cron: '10 6 * * 1'
+
+jobs:
+    php-tests:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                include:
+                    - php: 8.0
+                      testbench: 6.*
+                    - php: 7.4
+                      testbench: 6.*
+                    - php: 7.3
+                      testbench: 5.*
+                    - php: 7.3
+                      testbench: 4.*
+
+        name: PHP$ {{ matrix.php }} - Testbench ${{ matrix.testbench }}
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+
+            - name: Install dependencies
+              run: composer require "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+            
+            - name: Execute tests
+              run: vendor/bin/phpunit
