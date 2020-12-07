@@ -163,6 +163,6 @@ $company->type;
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The MIT License (MIT). Please see the [License File](LICENSE.md) for more information.
 
 © 2020 [Marcus Olsson](https://marcusolsson.me).
