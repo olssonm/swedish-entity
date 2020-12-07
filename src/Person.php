@@ -68,7 +68,7 @@ class Person
      *
      * @param int $digits
      * @param boolean $seperator
-     * @return void
+     * @return string
      * @throws PersonException
      */
     public function format(int $digits = 10, bool $seperator = false): string
@@ -107,15 +107,11 @@ class Person
      */
     public function valid(): bool
     {
-        $valid = false;
-
         try {
-            $valid = Personnummer::valid($this->ssn);
+            return Personnummer::valid($this->ssn);
         } catch (PersonnummerException $e) {
             return false;
         }
-
-        return $valid;
     }
 
     /**
@@ -130,28 +126,21 @@ class Person
         switch ($attr) {
             case 'age':
                 return $this->personnummer->getAge();
-                break;
 
             case 'gender':
                 return ($this->personnummer->isMale()) ? 'male' : 'female';
-                break;
 
             case 'ssn':
                 return $this->ssn;
-                break;
 
             case 'birthday':
                 return $this->getBirthday();
-                break;
 
             case 'type':
                 return ($this->personnummer->isCoordinationNumber()) ? 'Samordningsnummer' : 'Personnummer';
-                break;
-
-            default:
-                return $this->personnummer->{$attr};
-                break;
         }
+
+        return $this->personnummer->{$attr};
     }
 
     /**
