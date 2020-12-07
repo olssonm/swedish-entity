@@ -22,7 +22,7 @@ class SwedishEntityServiceProvider extends ServiceProvider
 
             if ($type == 'any') {
                 try {
-                    $object = SwedishEntity::detect($value);
+                    $object = Entity::detect($value);
                 } catch (DetectException $e) {
                     return false;
                 }

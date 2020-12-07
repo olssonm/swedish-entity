@@ -43,9 +43,9 @@ use Olssonm\SwedishEntity\Company;
 *⚠️ If the `detect`-method fails, an `Olssonm\SwedishEntity\Exceptions\DetectException` will be thrown.*
 
 ```php
-use Olssonm\SwedishEntity\SwedishEntity;
+use Olssonm\SwedishEntity\Entity;
 
-$entity = SwedishEntity::detect('600411-8177');
+$entity = Entity::detect('600411-8177');
 
 var_dump(get_class($entity))
 // Olssonm\SwedishEntity\Person
@@ -172,13 +172,13 @@ EF (Enskild firma) – while technically a company, uses the proprietors personn
 If you need to after the validation check type;
 
 ```php
-use Olssonm\SwedishEntity\SwedishEntity;
+use Olssonm\SwedishEntity\Entity;
 use Olssonm\SwedishEntity\Person;
 use Olssonm\SwedishEntity\Company;
 use Olssonm\SwedishEntity\Exceptions\DetectException
 
 try {
-    $entity = SwedishEntity::detect('600411-8177');
+    $entity = Entity::detect('600411-8177');
 } catch (DetectException $e) {
     // Handle exception
 }

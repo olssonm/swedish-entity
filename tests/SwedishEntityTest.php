@@ -5,7 +5,7 @@ namespace Olssonm\SwedishEntity\Tests;
 use Illuminate\Support\Facades\Validator;
 use Olssonm\SwedishEntity\Company;
 use Olssonm\SwedishEntity\Exceptions\DetectException;
-use Olssonm\SwedishEntity\SwedishEntity;
+use Olssonm\SwedishEntity\Entity;
 use Olssonm\SwedishEntity\Person;
 
 class SwedishEntityTest extends \Orchestra\Testbench\TestCase
@@ -133,21 +133,21 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
     /** @test */
     public function testSuccessfulDetect()
     {
-        $this->assertEquals(Company::class, get_class(SwedishEntity::detect('556016-0680')));
-        $this->assertEquals(Company::class, get_class(SwedishEntity::detect('5561034249')));
-        $this->assertEquals(Company::class, get_class(SwedishEntity::detect('212000-1355')));
+        $this->assertEquals(Company::class, get_class(Entity::detect('556016-0680')));
+        $this->assertEquals(Company::class, get_class(Entity::detect('5561034249')));
+        $this->assertEquals(Company::class, get_class(Entity::detect('212000-1355')));
 
-        $this->assertEquals(Person::class, get_class(SwedishEntity::detect('600411-8177')));
-        $this->assertEquals(Person::class, get_class(SwedishEntity::detect('19860210-7313')));
+        $this->assertEquals(Person::class, get_class(Entity::detect('600411-8177')));
+        $this->assertEquals(Person::class, get_class(Entity::detect('19860210-7313')));
     }
 
     /** @test */
     public function testUnsuccessfulDetection()
     {
         $this->expectException(DetectException::class);
-        SwedishEntity::detect('19212000-1355');
-        SwedishEntity::detect('20212000-1355');
-        SwedishEntity::detect('600411-8176');
+        Entity::detect('19212000-1355');
+        Entity::detect('20212000-1355');
+        Entity::detect('600411-8176');
     }
 
     /** @test */
