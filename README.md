@@ -2,11 +2,13 @@
 
 Validate, format and extract data for Swedish personnummer (social security numbers) and organisationsnummer (organisational numbers).
 
+This package also handles the temporary personal identity number known as "Samordningsnummer" (a.k.a. coordination number).
+
 Includes [validators for Laravel](#laravel-validators).
 
 –
 
-The benefits of this package – while not strictly according to standard – is the ability to format using both short/long (10 or 12 characters) without or with a seperator (i.e. 11/13 characters).
+The benefits of this package – while not always strictly according to the standard – is the ability to format using both short/long (10 or 12 characters) without or with a seperator (i.e. 11/13 characters).
 
 Note that companies always consists of 10 characters (and an optional seperator).
 
