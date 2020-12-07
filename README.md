@@ -1,6 +1,7 @@
 # Swedish Entity
 
 [![Latest Version on Packagist][version-ico]][packagist-link]
+[![PHP version][php-ico]][packagist-link]
 [![Build Status][build-ico]][build-link]
 [![Software License][license-ico]](LICENSE.md)
 
@@ -210,6 +211,7 @@ The MIT License (MIT). Please see the [License File](LICENSE.md) for more inform
 [version-ico]: https://img.shields.io/packagist/v/olssonm/swedish-enity.svg?style=flat-square
 [build-ico]: https://img.shields.io/github/workflow/status/olssonm/swedish-entity/run-tests.svg?style=flat-square
 [license-ico]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
+[php-ico]: https://img.shields.io/packagist/php-v/olssonm/swedish-entity.svg?style=flat-square
 
 [packagist-link]: https://packagist.org/packages/olssonm/swedish-entity
 [build-link]: https://github.com/olssonm/swedish-entity/actions?query=workflow%3A%22Run+tests%22
