@@ -16,5 +16,5 @@ updates:
     directory: "/"
     target_branch: "main"
     schedule:
-      interval: "live"
+      interval: "daily"
       
