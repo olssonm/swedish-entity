@@ -14,7 +14,9 @@ This package use the excellent [personnummer/php](https://github.com/personnumme
 
 ## Installation
 
-`composer require olssonm/swedish-entity`
+```
+composer require olssonm/swedish-entity
+```
 
 ## Usage
 
@@ -34,7 +36,7 @@ use Olssonm\SwedishEntity\Company;
 // true
 ```
 
-You can also automatically detect the entity type:
+Automatically detect the entity type:
 
 ```php
 use Olssonm\SwedishEntity\SwedishEntity;
@@ -96,13 +98,23 @@ $this->validate($request, [
 ]);
 ```
 
+Custom messages
+
+```php
+$validator = Validator::make($request->all(), [
+    'number' => 'required|entity:person'
+], [
+    'number.entity' => "Invalid personnummer!"
+]);
+```
+
 ## Attributes
 
 ### Person
 
 | Attribute | Comment                   | type      |
 | ----------|:--------------------------|----------:|
-| ssn       | The SSN of the object     | string    |
+| ssn       | The SSN of the entity     | string    |
 | century   | Birthyear century         | string    |
 | year      | Birthyear                 | string    |
 | month     | Birthmonth                | string    |
@@ -110,6 +122,7 @@ $this->validate($request, [
 | num       | The last four digits      | string    |
 | check     | The checksum verifier     | string    |
 | age       | Age                       | string    |
+| birthday  | Entitys birthday          | DateTime  |
 | gender    | Gender (Male/Female)      | string    |
 | type      | Type of ssn <sup>*</sup>  | string    |
 
@@ -121,15 +134,34 @@ $this->validate($request, [
 use Olssonm\SwedishEntity\Person;
 
 $person = new Person('600411-8177');
-$person->gender = 
+$person->gender;
+
+// Male
 ```
 
 ### Company
 
 | Attribute | Comment                   | type      |
 | ----------|:--------------------------|----------:|
-| org_no    | The org. no. of the object| string    |
+| org_no    | The org. no. of the entity| string    |
 | check     | The checksum verifier     | string    |
 | type      | Type of entity<sup>*</sup>| string    |
 
 <sup>*</sup>*One of the following: "Dödsbon", "Stat, landsting och kommuner", "Aktiebolag", "Enkelt bolag", "Ekonomiska föreningar", "Ideella föreningar och stiftelser" and "Handelsbolag, kommanditbolag och enkla bolag".*
+
+**Example**
+
+```php
+use Olssonm\SwedishEntity\Company;
+
+$person = new Company('212000-1355');
+$person->type;
+
+// Stat, landsting och kommuner
+```
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
+© 2020 [Marcus Olsson](https://marcusolsson.me).
