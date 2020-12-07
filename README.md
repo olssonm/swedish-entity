@@ -2,11 +2,11 @@
 
 Validate, format and extract data for Swedish personnummer (social security numbers) and organisationsnummer (organisational numbers).
 
-Includes validators for Laravel.
+Includes [validators for Laravel](#laravel-validators).
 
 –
 
-The benefits of this package – while not strictly according to standard – is the ability to format using borth short/long (10 or 12 characters) without or with a seperator (i.e. 11/13 characters).
+The benefits of this package – while not strictly according to standard – is the ability to format using both short/long (10 or 12 characters) without or with a seperator (i.e. 11/13 characters).
 
 Note that companies always consists of 10 characters (and an optional seperator).
 
@@ -48,10 +48,13 @@ var_dump(get_class($entity))
 
 ```
 
+⚠️ If the `detect`-method fails, a `Olssonm\SwedishEntity\Exceptions\DetectException` will be thrown, be sure to handle it.
+
 ### Formatting
 
-**Note**  
-Formatting an invalid entity will result in an exception.
+You may format the entitys number to your needs/liking.
+
+⚠️ Formatting an invalid entity will result in an exception.
 
 #### Person
 
@@ -90,7 +93,7 @@ $this->validate($request, [
 ]);
 ```
 
-You may also omit the parameter, and the validator will fallback to `any`
+You may also omit the parameter and the validator will fallback to `any`
 
 ```php
 $this->validate($request, [
@@ -135,7 +138,6 @@ use Olssonm\SwedishEntity\Person;
 
 $person = new Person('600411-8177');
 $person->gender;
-
 // Male
 ```
 
@@ -154,9 +156,8 @@ $person->gender;
 ```php
 use Olssonm\SwedishEntity\Company;
 
-$person = new Company('212000-1355');
-$person->type;
-
+$company = new Company('212000-1355');
+$company->type;
 // Stat, landsting och kommuner
 ```
 
