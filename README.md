@@ -10,7 +10,7 @@ Includes [validators for Laravel](#laravel-validators).
 
 The benefits of this package – while not always strictly according to the standard – is the ability to format using both short/long (10 or 12 characters) without or with a seperator (i.e. 11/13 characters).
 
-Note that companies always consists of 10 characters (and an optional seperator).
+Note that companies always consists of 10/11 characters (with or without an optional seperator).
 
 This package use the excellent [personnummer/php](https://github.com/personnummer/php)-package as it's basis for the social security-handling, but with some additional attributes.
 
@@ -85,7 +85,7 @@ use Olssonm\SwedishEntity\Company;
 
 ### Laravel validators
 
-The package registrers the "entity" rule, which accepts the parameters `any`, `company`, `person`. 
+The package registrers the "entity" rule, which accepts the parameters `any`, `company` or `person`. 
 
 ```php
 $this->validate($request, [
@@ -159,6 +159,42 @@ use Olssonm\SwedishEntity\Company;
 $company = new Company('212000-1355');
 $company->type;
 // Stat, landsting och kommuner
+```
+
+### Gotcha moments
+
+#### Enskild firma
+EF (Enskild firma) – while technically a company, uses the proprietors personnummer. Therefore that number will not validate as company. Instead of using a custom solution for this (as Creditsafe, Bisnode and others do, by adding additional numbers/characters to the organisational number/social security number), a way to handle this would be:
+
+- Work with 10 digits when expecting both people and companies (preferably with a seperator)
+- Use the `detect`-method to automatically validate both types
+
+If you need to after the validation check type;
+
+```php
+use Olssonm\SwedishEntity\SwedishEntity;
+use Olssonm\SwedishEntity\Person;
+use Olssonm\SwedishEntity\Company;
+use Olssonm\SwedishEntity\Exceptions\DetectException
+
+try {
+    $entity = SwedishEntity::detect('600411-8177');
+} catch (DetectException $e) {
+    // Handle exception
+}
+
+// PHP < 8
+if(get_class($entity) == Person::class) {
+    // Do stuff for person
+} elseif(get_class($entity) == Company::class) {
+    // Do stuff for company
+}
+
+// PHP 8
+$result = match($entity::class) {
+    Person::class => fn() {}, // Do stuff for person,
+    Company::class => fn() {} // Do stuff for company
+}
 ```
 
 ## License
