@@ -67,14 +67,14 @@ var_dump(get_class($entity))
 ```php
 use Olssonm\SwedishEntity\Person;
 
-(new Person('600411-8177'))->format($characters = 12, $seperator = true)
-// 19600411-8177
+(new Person('071012-9735'))->format($characters = 12, $seperator = true)
+// 20071012-9735
 
-(new Person('100411+8177'))->format($characters = 12, $seperator = true)
-// 19100411+8177
+(new Person('071012+9735'))->format($characters = 12, $seperator = true)
+// 19071012+9735
 
-(new Person('19100411+8177'))->format($characters = 10, $seperator = false)
-// 1004118177
+(new Person('200710129735'))->format()
+// 071012-9735
 ```
 
 #### Organization
