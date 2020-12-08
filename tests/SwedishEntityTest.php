@@ -75,6 +75,11 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
         $this->assertEquals('6004118177', (new Person('6004118177'))->format(10, false));
         $this->assertEquals('19600411-8177', (new Person('196004118177'))->format(12, true));
         $this->assertEquals('600411-8177', (new Person('196004118177'))->format(10, true));
+
+        $this->assertEquals('200101012862', (new Person('010101-2862'))->format(12, false));
+        $this->assertEquals('0101012862', (new Person('010101-2862'))->format(10, false));
+        $this->assertEquals('20010101-2862', (new Person('20010101-2862'))->format(12, true));
+        $this->assertEquals('010101-2862', (new Person('20010101-2862'))->format(10, true));
     }
 
     /** @test */
