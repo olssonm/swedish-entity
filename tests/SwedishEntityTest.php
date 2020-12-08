@@ -3,7 +3,7 @@
 namespace Olssonm\SwedishEntity\Tests;
 
 use Illuminate\Support\Facades\Validator;
-use Olssonm\SwedishEntity\Company;
+use Olssonm\SwedishEntity\Organization;
 use Olssonm\SwedishEntity\Exceptions\DetectException;
 use Olssonm\SwedishEntity\Entity;
 use Olssonm\SwedishEntity\Person;
@@ -86,56 +86,56 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
         $this->assertEquals('19010101+6434', (new Person('010101+6434'))->format(12, true));
     }
 
-    public function testPersonAsCompany()
+    public function testPersonAsOrganization()
     {
-        $this->assertFalse((new Company('20010101-6434'))->valid());
-        $this->assertFalse((new Company('190101016434'))->valid());
+        $this->assertFalse((new Organization('20010101-6434'))->valid());
+        $this->assertFalse((new Organization('190101016434'))->valid());
     }
 
     /** @test */
     public function testValidCompanies()
     {
-        $this->assertTrue((new Company('556016-0680'))->valid());
-        $this->assertTrue((new Company('556103-4249'))->valid());
-        $this->assertTrue((new Company('5561034249'))->valid());
+        $this->assertTrue((new Organization('556016-0680'))->valid());
+        $this->assertTrue((new Organization('556103-4249'))->valid());
+        $this->assertTrue((new Organization('5561034249'))->valid());
     }
 
     /** @test */
     public function testInvalidCompanies()
     {
-        $this->assertFalse((new Company('556016-0681'))->valid());
-        $this->assertFalse((new Company('556103-4250'))->valid());
-        $this->assertFalse((new Company('5561034250'))->valid());
+        $this->assertFalse((new Organization('556016-0681'))->valid());
+        $this->assertFalse((new Organization('556103-4250'))->valid());
+        $this->assertFalse((new Organization('5561034250'))->valid());
     }
 
     /** @test */
-    public function testCompanyAttributes()
+    public function testOrganizationAttributes()
     {
-        $company1 = new Company('556016-0680');
-        $this->assertEquals(0, $company1->check);
-        $this->assertEquals('556016-0680', $company1->org_no);
-        $this->assertEquals('Aktiebolag', $company1->type);
+        $organization1 = new Organization('556016-0680');
+        $this->assertEquals(0, $organization1->check);
+        $this->assertEquals('556016-0680', $organization1->org_no);
+        $this->assertEquals('Aktiebolag', $organization1->type);
 
-        $company1 = new Company('212000-1355');
-        $this->assertEquals(5, $company1->check);
-        $this->assertEquals('212000-1355', $company1->org_no);
-        $this->assertEquals('Stat, landsting och kommuner', $company1->type);
+        $organization2 = new Organization('212000-1355');
+        $this->assertEquals(5, $organization2->check);
+        $this->assertEquals('212000-1355', $organization2->org_no);
+        $this->assertEquals('Stat, landsting och kommuner', $organization2->type);
     }
 
     /** @test */
-    public function testCompanyFormatting()
+    public function testOrganizationFormatting()
     {
-        $this->assertEquals('5560160680', (new Company('556016-0680'))->format(false));
-        $this->assertEquals('556016-0680', (new Company('556016-0680'))->format(true));
-        $this->assertEquals('556016-0680', (new Company('5560160680'))->format(true));
+        $this->assertEquals('5560160680', (new Organization('556016-0680'))->format(false));
+        $this->assertEquals('556016-0680', (new Organization('556016-0680'))->format(true));
+        $this->assertEquals('556016-0680', (new Organization('5560160680'))->format(true));
     }
 
     /** @test */
     public function testSuccessfulDetect()
     {
-        $this->assertEquals(Company::class, get_class(Entity::detect('556016-0680')));
-        $this->assertEquals(Company::class, get_class(Entity::detect('5561034249')));
-        $this->assertEquals(Company::class, get_class(Entity::detect('212000-1355')));
+        $this->assertEquals(Organization::class, get_class(Entity::detect('556016-0680')));
+        $this->assertEquals(Organization::class, get_class(Entity::detect('5561034249')));
+        $this->assertEquals(Organization::class, get_class(Entity::detect('212000-1355')));
 
         $this->assertEquals(Person::class, get_class(Entity::detect('600411-8177')));
         $this->assertEquals(Person::class, get_class(Entity::detect('19860210-7313')));
@@ -154,7 +154,7 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
     public function testLaravelValidator()
     {
         if (class_exists(Validator::class)) {
-            $this->assertTrue($this->validate('556016-0680', 'company'));
+            $this->assertTrue($this->validate('556016-0680', 'organization'));
             $this->assertTrue($this->validate('5560160680', 'any'));
             $this->assertTrue($this->validate('556016-0680'));
             $this->assertFalse($this->validate('5560160680', 'person'));
@@ -162,10 +162,10 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
             $this->assertTrue($this->validate('600411-8177', 'person'));
             $this->assertTrue($this->validate('6004118177', 'any'));
             $this->assertTrue($this->validate('19600411-8177', 'any'));
-            $this->assertFalse($this->validate('600411-8177', 'company'));
+            $this->assertFalse($this->validate('600411-8177', 'organization'));
 
             $this->assertFalse($this->validate('aabbcc-ddee', 'any'));
-            $this->assertFalse($this->validate('aabbccddee', 'company'));
+            $this->assertFalse($this->validate('aabbccddee', 'organization'));
             $this->assertFalse($this->validate('00aabbccddee', 'person'));
         }
     }

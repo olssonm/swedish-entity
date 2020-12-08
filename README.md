@@ -6,7 +6,7 @@
 [![Scrutinizer Score][scrutinizer-ico]][scrutinizer-link]
 [![Software License][license-ico]](LICENSE.md)
 
-Validate, format and extract data for Swedish personnummer (social security numbers) and organisationsnummer (organisational numbers).
+Validate, format and extract data for Swedish personnummer (social security numbers) and organizationsnummer (organizational numbers).
 
 This package also handles the temporary personal identity number known as "Samordningsnummer" (a.k.a. coordination number).
 
@@ -38,9 +38,9 @@ use Olssonm\SwedishEntity\Person;
 ```
 
 ```php
-use Olssonm\SwedishEntity\Company;
+use Olssonm\SwedishEntity\Organization;
 
-(new Company('556016-0680'))->valid()
+(new Organization('556016-0680'))->valid()
 // true
 ```
 
@@ -77,25 +77,25 @@ use Olssonm\SwedishEntity\Person;
 // 1004118177
 ```
 
-#### Company
+#### Organization
 
 ```php
-use Olssonm\SwedishEntity\Company;
+use Olssonm\SwedishEntity\Organization;
 
-(new Person('5560160680'))->format($seperator = true)
+(new Organization('5560160680'))->format($seperator = true)
 // 556016-0680
 
-(new Person('556016-0680'))->format($seperator = false)
+(new Organization('556016-0680'))->format($seperator = false)
 // 5560160680
 ```
 
 ### Laravel validators
 
-The package registrers the "entity" rule, which accepts the parameters `any`, `company` or `person`. 
+The package registrers the "entity" rule, which accepts the parameters `any`, `organization` or `person`. 
 
 ```php
 $this->validate($request, [
-    'number' => 'required|entity:company'
+    'number' => 'required|entity:organization'
 ]);
 ```
 
@@ -147,7 +147,7 @@ $person->gender;
 // Male
 ```
 
-### Company
+### Organization
 
 | Attribute | Comment                   | type      |
 | ----------|:--------------------------|----------:|
@@ -160,9 +160,9 @@ $person->gender;
 **Example**
 
 ```php
-use Olssonm\SwedishEntity\Company;
+use Olssonm\SwedishEntity\Organization;
 
-$company = new Company('212000-1355');
+$company = new Organization('212000-1355');
 $company->type;
 // Stat, landsting och kommuner
 ```
@@ -170,7 +170,7 @@ $company->type;
 ### Gotcha moments
 
 #### Enskild firma
-EF (Enskild firma) – while technically a company, uses the proprietors personnummer. Therefore that number will not validate as company. Instead of using a custom solution for this (as Creditsafe, Bisnode and others do, by adding additional numbers/characters to the organisational number/social security number), a way to handle this would be:
+EF (Enskild firma) – while technically a company/organization, uses the proprietors personnummer. Therefore that number will not validate as company/organization. Instead of using a custom solution for this (as Creditsafe, Bisnode and others do, by adding additional numbers/characters to the organizational number/social security number), a way to handle this would be:
 
 - Work with 10 digits when expecting both people and companies (preferably with a seperator)
 - Use the `detect`-method to automatically validate both types
@@ -180,7 +180,7 @@ If you need to after the validation check type;
 ```php
 use Olssonm\SwedishEntity\Entity;
 use Olssonm\SwedishEntity\Person;
-use Olssonm\SwedishEntity\Company;
+use Olssonm\SwedishEntity\Organization;
 use Olssonm\SwedishEntity\Exceptions\DetectException
 
 try {
@@ -192,14 +192,14 @@ try {
 // PHP < 8
 if(get_class($entity) == Person::class) {
     // Do stuff for person
-} elseif(get_class($entity) == Company::class) {
-    // Do stuff for company
+} elseif(get_class($entity) == Organization::class) {
+    // Do stuff for organization
 }
 
 // PHP 8
 $result = match($entity::class) {
     Person::class => fn() {}, // Do stuff for person,
-    Company::class => fn() {} // Do stuff for company
+    Organization::class => fn() {} // Do stuff for organization
 }
 ```
 

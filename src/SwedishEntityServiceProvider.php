@@ -28,8 +28,8 @@ class SwedishEntityServiceProvider extends ServiceProvider
                 }
             } elseif ($type == 'person') {
                 $object = new Person($value);
-            } elseif ($type == 'company') {
-                $object = new Company($value);
+            } elseif ($type == 'organization') {
+                $object = new Organization($value);
             }
 
             if (!$object) {

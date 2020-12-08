@@ -4,7 +4,7 @@ namespace Olssonm\SwedishEntity\Exceptions;
 
 use Exception;
 
-class CompanyException extends Exception
+class OrganizationException extends Exception
 {
     public function __construct(
         $message = 'Invalid swedish organizational number, can not format',

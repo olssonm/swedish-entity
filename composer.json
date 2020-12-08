@@ -9,7 +9,7 @@
         "personal identity number",
         "social security number",
         "personnummer",
-        "organisational number",
+        "organizational number",
         "organisationsnummer"
     ],
     "homepage": "https://github.com/olssonm/swedish-entity",
