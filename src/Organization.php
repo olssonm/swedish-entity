@@ -2,10 +2,10 @@
 
 namespace Olssonm\SwedishEntity;
 
-use Olssonm\SwedishEntity\Exceptions\CompanyException;
+use Olssonm\SwedishEntity\Exceptions\OrganizationException;
 use Olssonm\SwedishEntity\Traits\Clean;
 
-class Company
+class Organization
 {
     use Clean;
 
@@ -54,12 +54,12 @@ class Company
      *
      * @param boolean $seperator
      * @return string
-     * @throws CompanyException
+     * @throws OrganizationException
      */
     public function format(bool $seperator = true)
     {
         if (!$this->valid) {
-            throw new CompanyException();
+            throw new OrganizationException();
         }
 
         $orgNo = str_replace('-', '', $this->orgNo);

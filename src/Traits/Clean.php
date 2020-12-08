@@ -11,7 +11,7 @@ trait Clean
      * Clean the input string
      *
      * @param string $number
-     * @return object
+     * @return string
      */
     public static function clean(string $number): string
     {

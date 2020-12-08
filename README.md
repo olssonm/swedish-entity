@@ -1,6 +1,12 @@
 # Swedish Entity
 
-Validate, format and extract data for Swedish personnummer (social security numbers) and organisationsnummer (organisational numbers).
+[![Latest Version on Packagist][version-ico]][packagist-link]
+[![PHP version][php-ico]][packagist-link]
+[![Build Status][build-ico]][build-link]
+[![Scrutinizer Score][scrutinizer-ico]][scrutinizer-link]
+[![Software License][license-ico]](LICENSE.md)
+
+Validate, format and extract data for Swedish personnummer (social security numbers) and organizationsnummer (organizational numbers).
 
 This package also handles the temporary personal identity number known as "Samordningsnummer" (a.k.a. coordination number).
 
@@ -10,7 +16,7 @@ Includes [validators for Laravel](#laravel-validators).
 
 The benefits of this package – while not always strictly according to the standard – is the ability to format using both short/long (10 or 12 characters) without or with a seperator (i.e. 11/13 characters).
 
-Note that companies always consists of 10 characters (and an optional seperator).
+Note that companies always consists of 10/11 characters (with or without an optional seperator).
 
 This package use the excellent [personnummer/php](https://github.com/personnummer/php)-package as it's basis for the social security-handling, but with some additional attributes.
 
@@ -32,9 +38,9 @@ use Olssonm\SwedishEntity\Person;
 ```
 
 ```php
-use Olssonm\SwedishEntity\Company;
+use Olssonm\SwedishEntity\Organization;
 
-(new Company('556016-0680'))->valid()
+(new Organization('556016-0680'))->valid()
 // true
 ```
 
@@ -43,9 +49,9 @@ use Olssonm\SwedishEntity\Company;
 *⚠️ If the `detect`-method fails, an `Olssonm\SwedishEntity\Exceptions\DetectException` will be thrown.*
 
 ```php
-use Olssonm\SwedishEntity\SwedishEntity;
+use Olssonm\SwedishEntity\Entity;
 
-$entity = SwedishEntity::detect('600411-8177');
+$entity = Entity::detect('600411-8177');
 
 var_dump(get_class($entity))
 // Olssonm\SwedishEntity\Person
@@ -71,25 +77,25 @@ use Olssonm\SwedishEntity\Person;
 // 1004118177
 ```
 
-#### Company
+#### Organization
 
 ```php
-use Olssonm\SwedishEntity\Company;
+use Olssonm\SwedishEntity\Organization;
 
-(new Person('5560160680'))->format($seperator = true)
+(new Organization('5560160680'))->format($seperator = true)
 // 556016-0680
 
-(new Person('556016-0680'))->format($seperator = false)
+(new Organization('556016-0680'))->format($seperator = false)
 // 5560160680
 ```
 
 ### Laravel validators
 
-The package registrers the "entity" rule, which accepts the parameters `any`, `company`, `person`. 
+The package registrers the "entity" rule, which accepts the parameters `any`, `organization` or `person`. 
 
 ```php
 $this->validate($request, [
-    'number' => 'required|entity:company'
+    'number' => 'required|entity:organization'
 ]);
 ```
 
@@ -141,7 +147,7 @@ $person->gender;
 // Male
 ```
 
-### Company
+### Organization
 
 | Attribute | Comment                   | type      |
 | ----------|:--------------------------|----------:|
@@ -154,11 +160,47 @@ $person->gender;
 **Example**
 
 ```php
-use Olssonm\SwedishEntity\Company;
+use Olssonm\SwedishEntity\Organization;
 
-$company = new Company('212000-1355');
-$company->type;
+$organization = new Organization('212000-1355');
+$organization->type;
 // Stat, landsting och kommuner
+```
+
+### Gotcha moments
+
+#### Enskild firma
+EF (Enskild firma) – while technically a company/organization, uses the proprietors personnummer. Therefore that number will not validate as company/organization. Instead of using a custom solution for this (as Creditsafe, Bisnode and others do – by adding additional numbers/characters to the organizational number/social security number), a way to handle this would be:
+
+- Work with 10 digits when expecting both people and companies (preferably with a seperator). Hint: both `Person` and `Organization` will format with 10 digits (and a seperator) by default via `format()`.
+- Use the `detect`-method to automatically validate both types
+
+If you need to after the validation check type;
+
+```php
+use Olssonm\SwedishEntity\Entity;
+use Olssonm\SwedishEntity\Person;
+use Olssonm\SwedishEntity\Organization;
+use Olssonm\SwedishEntity\Exceptions\DetectException
+
+try {
+    $entity = Entity::detect('600411-8177');
+} catch (DetectException $e) {
+    // Handle exception
+}
+
+// PHP < 8
+if(get_class($entity) == Person::class) {
+    // Do stuff for person
+} elseif(get_class($entity) == Organization::class) {
+    // Do stuff for organization
+}
+
+// PHP 8
+$result = match($entity::class) {
+    Person::class => fn() {}, // Do stuff for person,
+    Organization::class => fn() {} // Do stuff for organization
+}
 ```
 
 ## License
@@ -166,3 +208,13 @@ $company->type;
 The MIT License (MIT). Please see the [License File](LICENSE.md) for more information.
 
 © 2020 [Marcus Olsson](https://marcusolsson.me).
+
+[version-ico]: https://img.shields.io/packagist/v/olssonm/swedish-enity.svg?style=flat-square
+[build-ico]: https://img.shields.io/github/workflow/status/olssonm/swedish-entity/run-tests.svg?style=flat-square
+[license-ico]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
+[php-ico]: https://img.shields.io/packagist/php-v/olssonm/swedish-entity.svg?style=flat-square
+[scrutinizer-ico]: https://img.shields.io/scrutinizer/g/olssonm/swedish-entity.svg?style=flat-square
+
+[packagist-link]: https://packagist.org/packages/olssonm/swedish-entity
+[build-link]: https://github.com/olssonm/swedish-entity/actions?query=workflow%3A%22Run+tests%22
+[scrutinizer-link]: https://scrutinizer-ci.com/g/olssonm/swedish-entity

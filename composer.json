@@ -1,6 +1,6 @@
 {
     "name": "olssonm/swedish-entity",
-    "description": "Laravel validator for Swedish personal identity numbers / social security numbers (personnummer)",
+    "description": "Validator and formatter for Swedish personnummer and organisationsnummer. With Laravel validators.",
     "keywords": [
         "Laravel",
         "package",
@@ -8,7 +8,9 @@
         "swedish",
         "personal identity number",
         "social security number",
-        "personnummer"
+        "personnummer",
+        "organizational number",
+        "organisationsnummer"
     ],
     "homepage": "https://github.com/olssonm/swedish-entity",
     "license": "MIT",
@@ -24,7 +26,7 @@
         "personnummer/personnummer": "^3.0"
     },
     "suggest": {
-        "illuminate/support": "For Laravel-integration"
+        "laravel/framework": "For Laravel-integration"
     },
     "require-dev": {
         "orchestra/testbench": "^4.0|^5.0|^6.0",
@@ -41,7 +43,8 @@
         }
     },
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit",
+        "sniff": "vendor/bin/phpcs --standard=\"PSR12\" ./src"
     },
     "extra": {
         "branch-alias": {
