@@ -85,10 +85,10 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
     /** @test */
     public function testPeopleCentury()
     {
-        $this->assertEquals('186004118177', (new Person('600411+8177'))->format(12));
-        $this->assertEquals('200101016434', (new Person('010101-6434'))->format(12));
-        $this->assertEquals('190101016434', (new Person('010101+6434'))->format(12));
-        $this->assertEquals('19010101+6434', (new Person('010101+6434'))->format(12, true));
+        $this->assertEquals('18600411+8177', (new Person('600411+8177'))->format(12));
+        $this->assertEquals('20010101-6434', (new Person('010101-6434'))->format(12));
+        $this->assertEquals('19010101+6434', (new Person('010101+6434'))->format(12));
+        $this->assertEquals('190101016434', (new Person('010101+6434'))->format(12, false));
     }
 
     public function testPersonAsOrganization()

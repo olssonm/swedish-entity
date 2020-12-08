@@ -71,7 +71,7 @@ class Person
      * @return string
      * @throws PersonException
      */
-    public function format(int $digits = 10, bool $seperator = false): string
+    public function format(int $digits = 10, bool $seperator = true): string
     {
         if (!$this->valid) {
             throw new PersonException();

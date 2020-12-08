@@ -162,17 +162,17 @@ $person->gender;
 ```php
 use Olssonm\SwedishEntity\Organization;
 
-$company = new Organization('212000-1355');
-$company->type;
+$organization = new Organization('212000-1355');
+$organization->type;
 // Stat, landsting och kommuner
 ```
 
 ### Gotcha moments
 
 #### Enskild firma
-EF (Enskild firma) – while technically a company/organization, uses the proprietors personnummer. Therefore that number will not validate as company/organization. Instead of using a custom solution for this (as Creditsafe, Bisnode and others do, by adding additional numbers/characters to the organizational number/social security number), a way to handle this would be:
+EF (Enskild firma) – while technically a company/organization, uses the proprietors personnummer. Therefore that number will not validate as company/organization. Instead of using a custom solution for this (as Creditsafe, Bisnode and others do – by adding additional numbers/characters to the organizational number/social security number), a way to handle this would be:
 
-- Work with 10 digits when expecting both people and companies (preferably with a seperator)
+- Work with 10 digits when expecting both people and companies (preferably with a seperator). Hint: both `Person` and `Organization` will format with 10 digits (and a seperator) by default via `format()`.
 - Use the `detect`-method to automatically validate both types
 
 If you need to after the validation check type;
