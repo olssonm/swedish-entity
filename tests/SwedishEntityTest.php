@@ -159,19 +159,30 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
     public function testLaravelValidator()
     {
         if (class_exists(Validator::class)) {
-            $this->assertTrue($this->validate('556016-0680', 'organization'));
-            $this->assertTrue($this->validate('5560160680', 'any'));
-            $this->assertTrue($this->validate('556016-0680'));
-            $this->assertFalse($this->validate('5560160680', 'person'));
+            $this->assertTrue($this->validateLaravel('556016-0680', 'organization'));
+            $this->assertTrue($this->validateLaravel('5560160680', 'any'));
+            $this->assertTrue($this->validateLaravel('556016-0680'));
+            $this->assertFalse($this->validateLaravel('5560160680', 'person'));
 
-            $this->assertTrue($this->validate('600411-8177', 'person'));
-            $this->assertTrue($this->validate('6004118177', 'any'));
-            $this->assertTrue($this->validate('19600411-8177', 'any'));
-            $this->assertFalse($this->validate('600411-8177', 'organization'));
+            $this->assertTrue($this->validateLaravel('600411-8177', 'person'));
+            $this->assertTrue($this->validateLaravel('6004118177', 'any'));
+            $this->assertTrue($this->validateLaravel('19600411-8177', 'any'));
+            $this->assertFalse($this->validateLaravel('600411-8177', 'organization'));
 
-            $this->assertFalse($this->validate('aabbcc-ddee', 'any'));
-            $this->assertFalse($this->validate('aabbccddee', 'organization'));
-            $this->assertFalse($this->validate('00aabbccddee', 'person'));
+            $this->assertFalse($this->validateLaravel('aabbcc-ddee', 'any'));
+            $this->assertFalse($this->validateLaravel('aabbccddee', 'organization'));
+            $this->assertFalse($this->validateLaravel('00aabbccddee', 'person'));
+        }
+    }
+
+    /** @test */
+    public function testLaravelValidatorWithMessage()
+    {
+        if (class_exists(Validator::class)) {
+            $this->assertEquals('The number is not a valid entity.', $this->validateLaravelMessage('aabbcc-ddee', 'any'));
+            $this->assertEquals('Ogiltigt organisationsnummer.', $this->validateLaravelMessage('aabbccddee', 'organization', 'Ogiltigt organisationsnummer.'));
+            $this->assertEquals('Number är ett ogiltigt personnummer.', $this->validateLaravelMessage('00aabbccddee', 'person', ':Attribute är ett ogiltigt personnummer.'));
+            $this->assertEquals('number är ett ogiltigt personnummer.', $this->validateLaravelMessage('00aabbccddee', 'person', ':attribute är ett ogiltigt personnummer.'));
         }
     }
 
@@ -187,7 +198,7 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
         ];
     }
 
-    private function validate($number, $type = null)
+    private function validateLaravel($number, $type = null)
     {
         $data = ['number' => $number];
         $validator = Validator::make($data, [
@@ -195,6 +206,20 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
         ]);
 
         return $validator->passes();
+    }
+
+    private function validateLaravelMessage($number, $type = null, $message = null)
+    {
+        $data = ['number' => $number];
+        $validator = Validator::make($data, [
+            'number' => sprintf('entity:%s', $type)
+        ], [
+            'number.entity' => $message
+        ]);
+
+        $errors = $validator->errors();
+
+        return $errors->first('number');
     }
 
     public function tearDown(): void

@@ -37,7 +37,7 @@ class SwedishEntityServiceProvider extends ServiceProvider
             }
 
             return $object->valid();
-        });
+        }, 'The :attribute is not a valid entity.');
     }
 
     /**
