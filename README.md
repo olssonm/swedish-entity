@@ -6,11 +6,11 @@
 [![Scrutinizer Score][scrutinizer-ico]][scrutinizer-link]
 [![Software License][license-ico]](LICENSE.md)
 
-Validate, format and extract data for Swedish personnummer (social security numbers) and organizationsnummer (organizational numbers).
+**Validate, format and extract data for Swedish personnummer (social security numbers) and organisationsnummer (organizational numbers).**
 
 This package also handles the temporary personal identity number known as "Samordningsnummer" (a.k.a. coordination number).
 
-Includes [validators for Laravel](#laravel-validators).
+Also includes [validators for Laravel](#laravel-validators).
 
 –
 
@@ -18,7 +18,7 @@ The benefits of this package – while not always strictly according to the stan
 
 Note that companies always consists of 10/11 characters (with or without an optional seperator).
 
-This package use the excellent [personnummer/php](https://github.com/personnummer/php)-package as it's basis for the social security-handling, but with some additional attributes.
+This package use the excellent [personnummer/php](https://github.com/personnummer/php)-package as it's basis for the social security-handling, but with some additional attributes and methods.
 
 ## Installation
 
@@ -31,6 +31,7 @@ composer require olssonm/swedish-entity
 ### Validation
 
 ```php
+<?php
 use Olssonm\SwedishEntity\Person;
 
 (new Person('600411-8177'))->valid()
@@ -38,6 +39,7 @@ use Olssonm\SwedishEntity\Person;
 ```
 
 ```php
+<?php
 use Olssonm\SwedishEntity\Organization;
 
 (new Organization('556016-0680'))->valid()
@@ -49,6 +51,7 @@ use Olssonm\SwedishEntity\Organization;
 *⚠️ If the `detect`-method fails, an `Olssonm\SwedishEntity\Exceptions\DetectException` will be thrown.*
 
 ```php
+<?php
 use Olssonm\SwedishEntity\Entity;
 
 $entity = Entity::detect('600411-8177');
@@ -65,6 +68,7 @@ var_dump(get_class($entity))
 #### Person
 
 ```php
+<?php
 use Olssonm\SwedishEntity\Person;
 
 (new Person('071012-9735'))->format($characters = 12, $seperator = true)
@@ -80,6 +84,7 @@ use Olssonm\SwedishEntity\Person;
 #### Organization
 
 ```php
+<?php
 use Olssonm\SwedishEntity\Organization;
 
 (new Organization('5560160680'))->format($seperator = true)
@@ -94,6 +99,7 @@ use Olssonm\SwedishEntity\Organization;
 The package registrers the "entity" rule, which accepts the parameters `any`, `organization` or `person`. 
 
 ```php
+<?php
 $this->validate($request, [
     'number' => 'required|entity:organization'
 ]);
@@ -102,6 +108,7 @@ $this->validate($request, [
 You may also omit the parameter and the validator will fallback to `any`
 
 ```php
+<?php
 $this->validate($request, [
     'number' => 'required|entity'
 ]);
@@ -110,6 +117,9 @@ $this->validate($request, [
 Custom messages
 
 ```php
+<?php
+use Illuminate\Support\Facades\Validator;
+
 $validator = Validator::make($request->all(), [
     'number' => 'required|entity:person'
 ], [
@@ -140,6 +150,7 @@ $validator = Validator::make($request->all(), [
 **Example**
 
 ```php
+<?php
 use Olssonm\SwedishEntity\Person;
 
 $person = new Person('600411-8177');
@@ -160,6 +171,7 @@ $person->gender;
 **Example**
 
 ```php
+<?php
 use Olssonm\SwedishEntity\Organization;
 
 $organization = new Organization('212000-1355');
@@ -178,6 +190,7 @@ EF (Enskild firma) – while technically a company/organization, uses the propri
 If you need to after the validation check type;
 
 ```php
+<?php
 use Olssonm\SwedishEntity\Entity;
 use Olssonm\SwedishEntity\Person;
 use Olssonm\SwedishEntity\Organization;
@@ -210,7 +223,7 @@ The MIT License (MIT). Please see the [License File](LICENSE.md) for more inform
 © 2020 [Marcus Olsson](https://marcusolsson.me).
 
 [version-ico]: https://img.shields.io/packagist/v/olssonm/swedish-enity.svg?style=flat-square
-[build-ico]: https://img.shields.io/github/workflow/status/olssonm/swedish-entity/run-tests.svg?style=flat-square
+[build-ico]: https://img.shields.io/github/workflow/status/olssonm/swedish-entity/run-tests.svg?style=flat-square&label=tests
 [license-ico]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [php-ico]: https://img.shields.io/packagist/php-v/olssonm/swedish-entity.svg?style=flat-square
 [scrutinizer-ico]: https://img.shields.io/scrutinizer/g/olssonm/swedish-entity.svg?style=flat-square
