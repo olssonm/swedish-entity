@@ -34,6 +34,6 @@ jobs:
 
             - name: Install dependencies
               run: composer require "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-progress --no-suggest
-
+            
             - name: Execute tests
               run: vendor/bin/phpunit
