@@ -3,9 +3,9 @@
 namespace Olssonm\SwedishEntity;
 
 use DateTime;
-use Olssonm\SwedishEntity\Traits\Clean;
 use Personnummer\Personnummer;
 use Personnummer\PersonnummerException;
+use Olssonm\SwedishEntity\Traits\Clean;
 use Olssonm\SwedishEntity\Exceptions\PersonException;
 
 class Person
@@ -113,7 +113,12 @@ class Person
         return Personnummer::valid($this->ssn);
     }
 
-    public function setParts()
+    /**
+     * Set the parts of the persons SSN
+     *
+     * @return void
+     */
+    public function setParts(): void
     {
         $this->parts = [
             'age' => $this->personnummer->getAge(),
