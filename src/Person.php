@@ -2,11 +2,11 @@
 
 namespace Olssonm\SwedishEntity;
 
-use Olssonm\SwedishEntity\Traits\Clean;
+use DateTime;
 use Personnummer\Personnummer;
 use Personnummer\PersonnummerException;
+use Olssonm\SwedishEntity\Traits\Clean;
 use Olssonm\SwedishEntity\Exceptions\PersonException;
-use DateTime;
 
 class Person
 {
@@ -29,15 +29,22 @@ class Person
     /**
      * If object is valid
      *
-     * @var boolean
+     * @var bool
      */
     protected $valid = false;
+
+    /**
+     * The person parts
+     *
+     * @var array
+     */
+    protected $parts = [];
 
     /**
      * Constructor
      *
      * @param string $ssn
-     * @param boolean $allowCoordinationNumbers
+     * @param bool $allowCoordinationNumbers
      */
     public function __construct(string $ssn, $allowCoordinationNumbers = true)
     {
@@ -48,7 +55,8 @@ class Person
             $this->personnummer = new Personnummer($ssn, [
                 'allowCoordinationNumber' => $allowCoordinationNumbers
             ]);
-        } catch (PersonnummerException $e) {
+            $this->setParts();
+        } catch (PersonnummerException $exception) {
             //
         }
     }
@@ -67,7 +75,7 @@ class Person
      * Format the SSN
      *
      * @param int $digits
-     * @param boolean $seperator
+     * @param bool $seperator
      * @return string
      * @throws PersonException
      */
@@ -77,23 +85,18 @@ class Person
             throw new PersonException();
         }
 
-        $ssn = null;
-
-        if ($digits == 12) {
-            $ssn = $this->personnummer->format(true);
-        } else {
-            $ssn = $this->personnummer->format(false);
-        }
+        $ssn = $this->personnummer->format($digits == 12);
 
         // On "short" variant, the personnummer-instance
         // will always contain a sepeterator
         if (!$seperator && $digits == 10) {
             $ssn = str_replace(['-', '+'], '', $ssn);
         } elseif ($seperator && $digits == 12) {
+            $ssn = substr_replace($ssn, '-', 8, 0);
+
+            // If older than 100, we need a '+' seperator
             if ($this->personnummer->getAge() >= 100) {
-                $ssn = substr_replace($ssn, '+', 8, 0);
-            } else {
-                $ssn = substr_replace($ssn, '-', 8, 0);
+                $ssn = str_replace('-', '+', $ssn);
             }
         }
 
@@ -103,15 +106,29 @@ class Person
     /**
      * Checks if the SSN is valid
      *
-     * @return boolean
+     * @return bool
      */
     public function valid(): bool
     {
-        try {
-            return Personnummer::valid($this->ssn);
-        } catch (PersonnummerException $e) {
-            return false;
-        }
+        return Personnummer::valid($this->ssn);
+    }
+
+    /**
+     * Set the parts of the persons SSN
+     *
+     * @return void
+     */
+    public function setParts(): void
+    {
+        $this->parts = [
+            'age' => $this->personnummer->getAge(),
+            'gender' => ($this->personnummer->isMale()) ? 'male' : 'female',
+            'ssn' => $this->ssn,
+            'birthday' => $this->getBirthday(),
+            'type' => ($this->personnummer->isCoordinationNumber()) ?
+                'Samordningsnummer' :
+                'Personnummer'
+        ];
     }
 
     /**
@@ -123,21 +140,8 @@ class Person
      */
     public function __get(string $attr)
     {
-        switch ($attr) {
-            case 'age':
-                return $this->personnummer->getAge();
-
-            case 'gender':
-                return ($this->personnummer->isMale()) ? 'male' : 'female';
-
-            case 'ssn':
-                return $this->ssn;
-
-            case 'birthday':
-                return $this->getBirthday();
-
-            case 'type':
-                return ($this->personnummer->isCoordinationNumber()) ? 'Samordningsnummer' : 'Personnummer';
+        if (isset($this->parts[$attr])) {
+            return $this->parts[$attr];
         }
 
         return $this->personnummer->{$attr};

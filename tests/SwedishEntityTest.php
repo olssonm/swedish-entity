@@ -2,11 +2,14 @@
 
 namespace Olssonm\SwedishEntity\Tests;
 
+use ErrorException;
 use Illuminate\Support\Facades\Validator;
 use Olssonm\SwedishEntity\Organization;
-use Olssonm\SwedishEntity\Exceptions\DetectException;
 use Olssonm\SwedishEntity\Entity;
 use Olssonm\SwedishEntity\Person;
+use Olssonm\SwedishEntity\Exceptions\DetectException;
+use Olssonm\SwedishEntity\Exceptions\OrganizationException;
+use Olssonm\SwedishEntity\Exceptions\PersonException;
 
 class SwedishEntityTest extends \Orchestra\Testbench\TestCase
 {
@@ -47,20 +50,32 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
 		$this->assertFalse((new Person('88888888-8888'))->valid());
         $this->assertFalse((new Person('99999999-9999'))->valid());
     }
+
+    public function testPersonnummerInstance()
+    {
+        $person = new Person('600411-8177');
+        $this->assertEquals('Personnummer\Personnummer', get_class($person->getPersonnummerInstance()));
+    }
     
     /** @test */
     public function testPersonAttributes()
     {
-        $person = new Person('600411-8177');
-        $this->assertEquals(19, $person->century);
-        $this->assertEquals(60, $person->year);
-        $this->assertEquals(04, $person->month);
-        $this->assertEquals(11, $person->day);
-        $this->assertEquals(817, $person->num);
-        $this->assertEquals(7, $person->check);
-        $this->assertEquals(60, $person->age);
-        $this->assertEquals('Apr-11', $person->birthday->format('M-d'));
-        $this->assertEquals('male', $person->gender);
+        $person1 = new Person('600411-8177');
+        $this->assertEquals('600411-8177', $person1->ssn);
+        $this->assertEquals(19, $person1->century);
+        $this->assertEquals(60, $person1->year);
+        $this->assertEquals(04, $person1->month);
+        $this->assertEquals(11, $person1->day);
+        $this->assertEquals(817, $person1->num);
+        $this->assertEquals(7, $person1->check);
+        $this->assertEquals(60, $person1->age);
+        $this->assertEquals('Personnummer', $person1->type);
+        $this->assertEquals('Apr-11', $person1->birthday->format('M-d'));
+        $this->assertEquals('male', $person1->gender);
+
+        $person2 = new Person('600471-8174');
+        $this->assertEquals('Samordningsnummer', $person2->type);
+        $this->assertEquals('Apr-11', $person2->birthday->format('M-d'));
     }
 
     /** @test */
@@ -151,8 +166,32 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
     {
         $this->expectException(DetectException::class);
         Entity::detect('19212000-1355');
-        Entity::detect('20212000-1355');
-        Entity::detect('600411-8176');
+    }
+
+    /** @test */
+    public function testUnsuccessfulPersonFormat()
+    {
+        $this->expectException(PersonException::class);
+        (new Person('111111-1111'))->format();
+    }
+
+    /** @test */
+    public function testUnsuccessfulOrganizationFormat()
+    {
+        $this->expectException(OrganizationException::class);
+        (new Organization('111111-1111'))->format();
+    }
+
+    public function testOrganizationUnsetAttribute()
+    {
+        $this->expectException(ErrorException::class);
+        (new Organization('556016-0680'))->test;
+    }
+
+    public function testPersonUnsetAttribute()
+    {
+        $this->expectException(ErrorException::class);
+        (new Person('600411-8177'))->test;
     }
 
     /** @test */

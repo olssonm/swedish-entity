@@ -2,3 +2,4 @@
 .phpunit.result.cache
 composer.lock
 /src/.DS_Store
+/.DS_Store

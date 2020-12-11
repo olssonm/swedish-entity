@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="vendor/autoload.php"
-  backupGlobals="false"
-  colors="true"
-  convertErrorsToExceptions="true"
-  convertNoticesToExceptions="true"
-  convertWarningsToExceptions="true"
-  verbose="true"
-  processIsolation="false"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	bootstrap="vendor/autoload.php" 
+	backupGlobals="false" 
+	colors="true" 
+	convertErrorsToExceptions="true" 
+	convertNoticesToExceptions="true" 
+	convertWarningsToExceptions="true" 
+	verbose="true" 
+	processIsolation="false" 
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
 >
+  <coverage includeUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">./src/</directory>
+    </include>
+  </coverage>
   <testsuites>
-    <testsuite name="IdentityNumber Test Suite">
+    <testsuite name="Swedish Entity Test Suite">
       <directory suffix=".php">./tests/</directory>
     </testsuite>
   </testsuites>
-  <filter>
-    <whitelist addUncoveredFilesFromWhitelist="true">
-      <directory suffix=".php">./src/</directory>
-    </whitelist>
-  </filter>
 </phpunit>

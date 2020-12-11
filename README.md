@@ -160,11 +160,11 @@ $person->gender;
 
 ### Organization
 
-| Attribute | Comment                   | type      |
-| ----------|:--------------------------|----------:|
-| org_no    | The org. no. of the entity| string    |
-| check     | The checksum verifier     | string    |
-| type      | Type of entity<sup>*</sup>| string    |
+| Attribute | Comment                           | type      |
+| ----------|:----------------------------------|----------:|
+| org_no    | The org. no. of the entity        | string    |
+| check     | The checksum verifier             | string    |
+| type      | Type of organisation<sup>*</sup>  | string    |
 
 <sup>*</sup>*One of the following: "Dödsbon", "Stat, landsting och kommuner", "Aktiebolag", "Enkelt bolag", "Ekonomiska föreningar", "Ideella föreningar och stiftelser" and "Handelsbolag, kommanditbolag och enkla bolag".*
 
