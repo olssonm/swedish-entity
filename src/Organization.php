@@ -21,16 +21,12 @@ class Organization
      *
      * @var array
      */
-    protected $parts = [
-        'type' => null,
-        'org_no' => null,
-        'check' => null
-    ];
+    protected $parts = [];
 
     /**
      * If object is valid
      *
-     * @var boolean
+     * @var bool
      */
     protected $valid = false;
 
@@ -52,7 +48,7 @@ class Organization
     /**
      * Format the ORGNO
      *
-     * @param boolean $seperator
+     * @param bool $seperator
      * @return string
      * @throws OrganizationException
      */
@@ -74,28 +70,20 @@ class Organization
     /**
      * Check if the ORGNO is valid
      *
-     * @return boolean
+     * @return bool
      */
     public function valid(): bool
     {
-        if (substr($this->orgNo, 2, 2) < 20) {
-            return false;
-        }
-
-        if (strlen($this->orgNo) > 11) {
+        if (substr($this->orgNo, 2, 2) < 20 || strlen($this->orgNo) > 11) {
             return false;
         }
 
         $orgNo = str_replace(['-'], '', $this->orgNo);
-
         $orgNo = array_reverse(str_split($orgNo));
 
         // Luhn
         $sum = 0;
         foreach ($orgNo as $key => $number) {
-            if (!is_numeric($number)) {
-                return false;
-            }
             if ($key % 2) {
                 $number = $number * 2;
             }
@@ -120,32 +108,30 @@ class Organization
      * Dynamic getter
      *
      * @param string $attr
-     * @return mixed
+     * @return string|\ErrorException
      */
-    public function __get(string $name)
+    public function __get(string $attr)
     {
-        if (isset($this->parts[$name])) {
-            return $this->parts[$name];
+        if (isset($this->parts[$attr])) {
+            return $this->parts[$attr];
         }
 
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        trigger_error(
+        return trigger_error(
             sprintf(
                 'Undefined property via __get(): %s in %s on line %d',
-                $name,
+                $attr,
                 $trace[0]['file'],
                 $trace[0]['line']
             ),
             E_USER_NOTICE
         );
-
-        return null;
     }
 
     /**
      * Parse the type
      *
-     * @param integer $type
+     * @param int $type
      * @return string
      */
     protected function parseType(int $type): string

@@ -16,8 +16,6 @@ trait Clean
     public static function clean(string $number): string
     {
         $pattern = '0123456789-+';
-        $number = preg_replace("/[^" . preg_quote($pattern, "/") . "]/", '', $number);
-
-        return $number;
+        return preg_replace("/[^" . preg_quote($pattern, "/") . "]/", '', $number);
     }
 }

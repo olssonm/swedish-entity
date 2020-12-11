@@ -30,7 +30,8 @@
     },
     "require-dev": {
         "orchestra/testbench": "^4.0|^5.0|^6.0",
-        "squizlabs/php_codesniffer": "^3.5"
+        "squizlabs/php_codesniffer": "^3.5",
+        "nunomaduro/phpinsights": "^1.14"
     },
     "autoload": {
         "psr-4": {

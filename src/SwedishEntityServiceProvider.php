@@ -14,26 +14,22 @@ class SwedishEntityServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app['validator']->extend('entity', function ($attribute, $value, $parameters) {
+        $this->app['validator']->extend('entity', function ($attribute, $value, $parameters): bool {
 
             $type = isset($parameters[0]) ? $parameters[0] : 'any';
 
             $object = null;
 
-            if ($type == 'any') {
+            if ($type === 'any') {
                 try {
                     $object = Entity::detect($value);
-                } catch (DetectException $e) {
+                } catch (DetectException $exception) {
                     return false;
                 }
-            } elseif ($type == 'person') {
+            } elseif ($type === 'person') {
                 $object = new Person($value);
-            } elseif ($type == 'organization') {
+            } elseif ($type === 'organization') {
                 $object = new Organization($value);
-            }
-
-            if (!$object) {
-                return false;
             }
 
             return $object->valid();
@@ -45,7 +41,7 @@ class SwedishEntityServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }
