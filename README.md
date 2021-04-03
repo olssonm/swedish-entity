@@ -48,7 +48,7 @@ use Olssonm\SwedishEntity\Organization;
 
 **Automatically detect the entity type:**
 
-*⚠️ If the `detect`-method fails, an `Olssonm\SwedishEntity\Exceptions\DetectException` will be thrown.*
+> *⚠️ If the `detect`-method fails, an `Olssonm\SwedishEntity\Exceptions\DetectException` will be thrown.*
 
 ```php
 <?php
@@ -63,7 +63,7 @@ var_dump(get_class($entity))
 
 ### Formatting
 
-*⚠️ Formatting an invalid entity will result in an exception. You should make sure to validate it beforehand.*
+> *⚠️ Formatting an invalid entity will result in an exception. You should make sure to validate it beforehand.*
 
 #### Person
 
@@ -220,7 +220,7 @@ $result = match($entity::class) {
 
 The MIT License (MIT). Please see the [License File](LICENSE.md) for more information.
 
-© 2020 [Marcus Olsson](https://marcusolsson.me).
+© 2021 [Marcus Olsson](https://marcusolsson.me).
 
 [version-ico]: https://img.shields.io/packagist/v/olssonm/swedish-entity.svg?style=flat-square
 [build-ico]: https://img.shields.io/github/workflow/status/olssonm/swedish-entity/Run%20tests.svg?style=flat-square&label=tests
