@@ -44,7 +44,7 @@
     },
     "scripts": {
         "test": "phpunit",
-        "sniff": "vendor/bin/phpcs --standard=\"PSR12\" ./src"
+        "phpsniff": "vendor/bin/phpcs --standard=\"PSR12\" ./src"
     },
     "extra": {
         "branch-alias": {
