@@ -2,6 +2,7 @@
 
 namespace Olssonm\SwedishEntity\Tests;
 
+use Carbon\Carbon;
 use ErrorException;
 use Illuminate\Support\Facades\Validator;
 use Olssonm\SwedishEntity\Organization;
@@ -56,7 +57,7 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
         $person = new Person('600411-8177');
         $this->assertEquals('Personnummer\Personnummer', get_class($person->getPersonnummerInstance()));
     }
-    
+
     /** @test */
     public function testPersonAttributes()
     {
@@ -68,7 +69,7 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
         $this->assertEquals(11, $person1->day);
         $this->assertEquals(817, $person1->num);
         $this->assertEquals(7, $person1->check);
-        $this->assertEquals(60, $person1->age);
+        $this->assertEquals(Carbon::now()->setYear('1960')->diffInYears(Carbon::now()), $person1->age);
         $this->assertEquals('Personnummer', $person1->type);
         $this->assertEquals('Apr-11', $person1->birthday->format('M-d'));
         $this->assertEquals('male', $person1->gender);
@@ -148,6 +149,22 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
         $this->assertEquals('5560160680', (new Organization('556016-0680'))->format(false));
         $this->assertEquals('556016-0680', (new Organization('556016-0680'))->format(true));
         $this->assertEquals('556016-0680', (new Organization('5560160680'))->format(true));
+    }
+
+    /** @test */
+    public function testObviousBadNumbers()
+    {
+        $this->assertFalse((new Organization('1234'))->valid());
+        $this->assertFalse((new Person('1234'))->valid());
+
+        $this->assertFalse((new Organization('123456789101112'))->valid());
+        $this->assertFalse((new Person('123456789101112'))->valid());
+
+        $this->assertFalse((new Organization('345678-abcd'))->valid());
+        $this->assertFalse((new Person('345678-abcd'))->valid());
+
+        $this->assertFalse((new Organization('abcefghijklm'))->valid());
+        $this->assertFalse((new Person('abcefghijklm'))->valid());
     }
 
     /** @test */

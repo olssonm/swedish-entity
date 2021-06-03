@@ -3,12 +3,9 @@
 namespace Olssonm\SwedishEntity;
 
 use Olssonm\SwedishEntity\Exceptions\DetectException;
-use Olssonm\SwedishEntity\Traits\Clean;
 
 class Entity
 {
-    use Clean;
-
     /**
      * Detect if a number is an org-no or ssn
      *
@@ -19,9 +16,6 @@ class Entity
     public static function detect($number): object
     {
         $object = null;
-
-        // Need to clean string to have a usefull string length
-        $number = self::clean($number);
 
         // Remove seperator
         $number = str_replace('-', '', $number);

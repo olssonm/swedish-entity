@@ -3,12 +3,9 @@
 namespace Olssonm\SwedishEntity;
 
 use Olssonm\SwedishEntity\Exceptions\OrganizationException;
-use Olssonm\SwedishEntity\Traits\Clean;
 
 class Organization
 {
-    use Clean;
-
     /**
      * The organizational number
      *
@@ -37,7 +34,7 @@ class Organization
      */
     public function __construct(string $orgNo)
     {
-        $this->orgNo = self::clean($orgNo);
+        $this->orgNo = $orgNo;
         $this->valid = $this->valid();
 
         if ($this->valid) {
@@ -74,7 +71,12 @@ class Organization
      */
     public function valid(): bool
     {
-        if (substr($this->orgNo, 2, 2) < 20 || strlen($this->orgNo) > 11) {
+        if (!preg_match("/^\d{6}[\-\/]?\d{4}+$/", $this->orgNo)) {
+            return false;
+        }
+
+        // Second "pair" (22 in 112233-4455) is always higher than 20
+        if (substr($this->orgNo, 2, 2) < 20) {
             return false;
         }
 

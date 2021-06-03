@@ -5,13 +5,10 @@ namespace Olssonm\SwedishEntity;
 use DateTime;
 use Personnummer\Personnummer;
 use Personnummer\PersonnummerException;
-use Olssonm\SwedishEntity\Traits\Clean;
 use Olssonm\SwedishEntity\Exceptions\PersonException;
 
 class Person
 {
-    use Clean;
-
     /**
      * The set SSN
      *
@@ -48,7 +45,7 @@ class Person
      */
     public function __construct(string $ssn, $allowCoordinationNumbers = true)
     {
-        $this->ssn = self::clean($ssn);
+        $this->ssn = $ssn;
         $this->valid = $this->valid();
 
         try {
