@@ -238,6 +238,8 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
     {
         if (class_exists(Validator::class)) {
             $this->assertEquals('The number is not a valid entity.', $this->validateLaravelMessage('aabbcc-ddee', 'any'));
+            $this->assertEquals('Number är ett ogiltigt organisations-/personnummer.', $this->validateLaravelMessage('600411-8174', 'any', ':Attribute är ett ogiltigt organisations-/personnummer.'));
+            $this->assertEquals('Number är ett ogiltigt organisations-/personnummer.', $this->validateLaravelMessage('600411 8174', 'any', ':Attribute är ett ogiltigt organisations-/personnummer.'));
             $this->assertEquals('Ogiltigt organisationsnummer.', $this->validateLaravelMessage('aabbccddee', 'organization', 'Ogiltigt organisationsnummer.'));
             $this->assertEquals('Number är ett ogiltigt personnummer.', $this->validateLaravelMessage('00aabbccddee', 'person', ':Attribute är ett ogiltigt personnummer.'));
             $this->assertEquals('number är ett ogiltigt personnummer.', $this->validateLaravelMessage('00aabbccddee', 'person', ':attribute är ett ogiltigt personnummer.'));
