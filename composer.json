@@ -23,7 +23,7 @@
     ],
     "require": {
         "php": "^7.3|^8.0",
-        "personnummer/personnummer": "^3.0"
+        "personnummer/personnummer": "^3.0.4"
     },
     "suggest": {
         "laravel/framework": "For Laravel-integration"
