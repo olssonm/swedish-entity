@@ -20,10 +20,7 @@ class Entity
     {
         $object = null;
 
-        // Need to clean string to have a usefull string length
-        $number = self::clean($number);
-
-        // Remove seperator
+        // Remove separator
         $number = str_replace('-', '', $number);
         $length = strlen($number);
 

@@ -2,20 +2,17 @@
 
 namespace Olssonm\SwedishEntity\Traits;
 
-/**
- * Trait for giving access to the clean()-method
- */
 trait Clean
 {
     /**
-     * Clean the input string
+     * Clean/remove illegal characters from string
      *
-     * @param string $number
+     * @param string $string
      * @return string
      */
-    public static function clean(string $number): string
+    public static function clean(string $string): string
     {
         $pattern = '0123456789-+';
-        return preg_replace("/[^" . preg_quote($pattern, "/") . "]/", '', $number);
+        return preg_replace("/[^" . preg_quote($pattern, "/") . "]/", '', $string);
     }
 }

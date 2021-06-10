@@ -2,6 +2,7 @@
 
 namespace Olssonm\SwedishEntity\Tests;
 
+use Carbon\Carbon;
 use ErrorException;
 use Illuminate\Support\Facades\Validator;
 use Olssonm\SwedishEntity\Organization;
@@ -10,6 +11,8 @@ use Olssonm\SwedishEntity\Person;
 use Olssonm\SwedishEntity\Exceptions\DetectException;
 use Olssonm\SwedishEntity\Exceptions\OrganizationException;
 use Olssonm\SwedishEntity\Exceptions\PersonException;
+use Olssonm\SwedishEntity\Helpers\Cleaner;
+use Personnummer\Personnummer;
 
 class SwedishEntityTest extends \Orchestra\Testbench\TestCase
 {
@@ -56,7 +59,7 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
         $person = new Person('600411-8177');
         $this->assertEquals('Personnummer\Personnummer', get_class($person->getPersonnummerInstance()));
     }
-    
+
     /** @test */
     public function testPersonAttributes()
     {
@@ -68,7 +71,7 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
         $this->assertEquals(11, $person1->day);
         $this->assertEquals(817, $person1->num);
         $this->assertEquals(7, $person1->check);
-        $this->assertEquals(60, $person1->age);
+        $this->assertEquals(Carbon::now()->setYear('1960')->diffInYears(Carbon::now()), $person1->age);
         $this->assertEquals('Personnummer', $person1->type);
         $this->assertEquals('Apr-11', $person1->birthday->format('M-d'));
         $this->assertEquals('male', $person1->gender);
@@ -151,6 +154,22 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
     }
 
     /** @test */
+    public function testObviousBadNumbers()
+    {
+        $this->assertFalse((new Organization('1234'))->valid());
+        $this->assertFalse((new Person('1234'))->valid());
+
+        $this->assertFalse((new Organization('123456789101112'))->valid());
+        $this->assertFalse((new Person('123456789101112'))->valid());
+
+        $this->assertFalse((new Organization('345678-abcd'))->valid());
+        $this->assertFalse((new Person('345678-abcd'))->valid());
+
+        $this->assertFalse((new Organization('abcefghijklm'))->valid());
+        $this->assertFalse((new Person('abcefghijklm'))->valid());
+    }
+
+    /** @test */
     public function testSuccessfulDetect()
     {
         $this->assertEquals(Organization::class, get_class(Entity::detect('556016-0680')));
@@ -219,10 +238,30 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
     {
         if (class_exists(Validator::class)) {
             $this->assertEquals('The number is not a valid entity.', $this->validateLaravelMessage('aabbcc-ddee', 'any'));
+            $this->assertEquals('Number är ett ogiltigt organisations-/personnummer.', $this->validateLaravelMessage('600411-8174', 'any', ':Attribute är ett ogiltigt organisations-/personnummer.'));
+            $this->assertEquals('Number är ett ogiltigt organisations-/personnummer.', $this->validateLaravelMessage('600411 8174', 'any', ':Attribute är ett ogiltigt organisations-/personnummer.'));
             $this->assertEquals('Ogiltigt organisationsnummer.', $this->validateLaravelMessage('aabbccddee', 'organization', 'Ogiltigt organisationsnummer.'));
             $this->assertEquals('Number är ett ogiltigt personnummer.', $this->validateLaravelMessage('00aabbccddee', 'person', ':Attribute är ett ogiltigt personnummer.'));
             $this->assertEquals('number är ett ogiltigt personnummer.', $this->validateLaravelMessage('00aabbccddee', 'person', ':attribute är ett ogiltigt personnummer.'));
         }
+    }
+
+    /** @test */
+    public function testCleanerHelper()
+    {
+        $this->assertEquals('600411-8177', Entity::clean('600411-8177a'));
+        $this->assertEquals('6004118177', Entity::clean('600411 8177'));
+        $this->assertEquals('600411-8177', Entity::clean('a600411-8177'));
+        $this->assertEquals('6004118177', Entity::clean('6004118177'));
+
+        // Assert that a bad value can be good after a cleaning
+        $bad1 = '600411-8177a';
+        $this->assertFalse((new Person($bad1))->valid());
+        $this->assertTrue((new Person(Entity::clean($bad1)))->valid());
+
+        $bad2 = '20600411   8177';
+        $this->assertFalse((new Person($bad2))->valid());
+        $this->assertTrue((new Person(Entity::clean($bad2)))->valid());
     }
 
     /**

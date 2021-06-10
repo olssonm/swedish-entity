@@ -14,9 +14,9 @@ Also includes [validators for Laravel](#laravel-validators).
 
 –
 
-The benefits of this package – while not always strictly according to the standard – is the ability to format using both short/long (10 or 12 characters) without or with a seperator (i.e. 11/13 characters).
+The benefits of this package – while not always strictly according to the standard – is the ability to format using both short/long (10 or 12 characters) without or with a separator (i.e. 11/13 characters).
 
-Note that companies always consists of 10/11 characters (with or without an optional seperator).
+Note that companies always consists of 10/11 characters (with or without an optional separator).
 
 This package use the excellent [personnummer/php](https://github.com/personnummer/php)-package as it's basis for the social security-handling, but with some additional attributes and methods.
 
@@ -71,10 +71,10 @@ var_dump(get_class($entity))
 <?php
 use Olssonm\SwedishEntity\Person;
 
-(new Person('071012-9735'))->format($characters = 12, $seperator = true)
+(new Person('071012-9735'))->format($characters = 12, $separator = true)
 // 20071012-9735
 
-(new Person('071012+9735'))->format($characters = 12, $seperator = true)
+(new Person('071012+9735'))->format($characters = 12, $separator = true)
 // 19071012+9735
 
 (new Person('200710129735'))->format()
@@ -87,10 +87,10 @@ use Olssonm\SwedishEntity\Person;
 <?php
 use Olssonm\SwedishEntity\Organization;
 
-(new Organization('5560160680'))->format($seperator = true)
+(new Organization('5560160680'))->format($separator = true)
 // 556016-0680
 
-(new Organization('556016-0680'))->format($seperator = false)
+(new Organization('556016-0680'))->format($separator = false)
 // 5560160680
 ```
 
@@ -179,12 +179,27 @@ $organization->type;
 // Stat, landsting och kommuner
 ```
 
+### Clean-helper
+
+The Entity-class contains a clean-helper that can be useful for removing illegal characters from a social security- or organisational number:
+
+```php
+<?php
+use Olssonm\SwedishEntity\Entity;
+
+$number = Entity::clean(' 212000-1355a');
+// '212000-1355'
+```
+
+Note that this is not automatically applied, so you will need to clean the string before validation.
+
+
 ### Gotcha moments
 
 #### Enskild firma
 EF (Enskild firma) – while technically a company/organization, uses the proprietors personnummer. Therefore that number will not validate as company/organization. Instead of using a custom solution for this (as Creditsafe, Bisnode and others do – by adding additional numbers/characters to the organizational number/social security number), a way to handle this would be:
 
-- Work with 10 digits when expecting both people and companies (preferably with a seperator). Hint: both `Person` and `Organization` will format with 10 digits (and a seperator) by default via `format()`.
+- Work with 10 digits when expecting both people and companies (preferably with a separator). Hint: both `Person` and `Organization` will format with 10 digits (and a separator) by default via `format()`.
 - Use the `detect`-method to automatically validate both types
 
 If you need to after the validation check type;
@@ -210,9 +225,10 @@ if(get_class($entity) == Person::class) {
 }
 
 // PHP 8
-$result = match($entity::class) {
-    Person::class => fn() {}, // Do stuff for person,
-    Organization::class => fn() {} // Do stuff for organization
+if($entity::class == Person::class) {
+    // Do stuff for person
+} elseif($entity::class == Organization::class) {
+    // Do stuff for organization
 }
 ```
 
