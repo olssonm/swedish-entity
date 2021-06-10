@@ -45,11 +45,11 @@ class Organization
     /**
      * Format the organizational number
      *
-     * @param bool $seperator
+     * @param bool $separator
      * @return string
      * @throws OrganizationException
      */
-    public function format(bool $seperator = true): string
+    public function format(bool $separator = true): string
     {
         if (!$this->valid) {
             throw new OrganizationException();
@@ -57,7 +57,7 @@ class Organization
 
         $orgNo = str_replace('-', '', $this->orgNo);
 
-        if (!$seperator) {
+        if (!$separator) {
             return $orgNo;
         }
 

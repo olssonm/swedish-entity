@@ -20,7 +20,7 @@ class Entity
     {
         $object = null;
 
-        // Remove seperator
+        // Remove separator
         $number = str_replace('-', '', $number);
         $length = strlen($number);
 

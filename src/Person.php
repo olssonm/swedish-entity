@@ -72,11 +72,11 @@ class Person
      * Format the SSN
      *
      * @param int $digits
-     * @param bool $seperator
+     * @param bool $separator
      * @return string
      * @throws PersonException
      */
-    public function format(int $digits = 10, bool $seperator = true): string
+    public function format(int $digits = 10, bool $separator = true): string
     {
         if (!$this->valid) {
             throw new PersonException();
@@ -86,12 +86,12 @@ class Person
 
         // On "short" variant, the personnummer-instance
         // will always contain a sepeterator
-        if (!$seperator && $digits == 10) {
+        if (!$separator && $digits == 10) {
             $ssn = str_replace(['-', '+'], '', $ssn);
-        } elseif ($seperator && $digits == 12) {
+        } elseif ($separator && $digits == 12) {
             $ssn = substr_replace($ssn, '-', 8, 0);
 
-            // If older than 100, we need a '+' seperator
+            // If older than 100, we need a '+' separator
             if ($this->personnummer->getAge() >= 100) {
                 $ssn = str_replace('-', '+', $ssn);
             }

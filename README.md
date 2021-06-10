@@ -71,10 +71,10 @@ var_dump(get_class($entity))
 <?php
 use Olssonm\SwedishEntity\Person;
 
-(new Person('071012-9735'))->format($characters = 12, $seperator = true)
+(new Person('071012-9735'))->format($characters = 12, $separator = true)
 // 20071012-9735
 
-(new Person('071012+9735'))->format($characters = 12, $seperator = true)
+(new Person('071012+9735'))->format($characters = 12, $separator = true)
 // 19071012+9735
 
 (new Person('200710129735'))->format()
@@ -87,10 +87,10 @@ use Olssonm\SwedishEntity\Person;
 <?php
 use Olssonm\SwedishEntity\Organization;
 
-(new Organization('5560160680'))->format($seperator = true)
+(new Organization('5560160680'))->format($separator = true)
 // 556016-0680
 
-(new Organization('556016-0680'))->format($seperator = false)
+(new Organization('556016-0680'))->format($separator = false)
 // 5560160680
 ```
 
