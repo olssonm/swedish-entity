@@ -11,6 +11,8 @@ use Olssonm\SwedishEntity\Person;
 use Olssonm\SwedishEntity\Exceptions\DetectException;
 use Olssonm\SwedishEntity\Exceptions\OrganizationException;
 use Olssonm\SwedishEntity\Exceptions\PersonException;
+use Olssonm\SwedishEntity\Helpers\Cleaner;
+use Personnummer\Personnummer;
 
 class SwedishEntityTest extends \Orchestra\Testbench\TestCase
 {
@@ -240,6 +242,24 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
             $this->assertEquals('Number är ett ogiltigt personnummer.', $this->validateLaravelMessage('00aabbccddee', 'person', ':Attribute är ett ogiltigt personnummer.'));
             $this->assertEquals('number är ett ogiltigt personnummer.', $this->validateLaravelMessage('00aabbccddee', 'person', ':attribute är ett ogiltigt personnummer.'));
         }
+    }
+
+    /** @test */
+    public function testCleanerHelper()
+    {
+        $this->assertEquals('600411-8177', Entity::clean('600411-8177a'));
+        $this->assertEquals('6004118177', Entity::clean('600411 8177'));
+        $this->assertEquals('600411-8177', Entity::clean('a600411-8177'));
+        $this->assertEquals('6004118177', Entity::clean('6004118177'));
+
+        // Assert that a bad value can be good after a cleaning
+        $bad1 = '600411-8177a';
+        $this->assertFalse((new Person($bad1))->valid());
+        $this->assertTrue((new Person(Entity::clean($bad1)))->valid());
+
+        $bad2 = '20600411   8177';
+        $this->assertFalse((new Person($bad2))->valid());
+        $this->assertTrue((new Person(Entity::clean($bad2)))->valid());
     }
 
     /**

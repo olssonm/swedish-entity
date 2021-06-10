@@ -43,13 +43,13 @@ class Organization
     }
 
     /**
-     * Format the ORGNO
+     * Format the organizational number
      *
      * @param bool $seperator
      * @return string
      * @throws OrganizationException
      */
-    public function format(bool $seperator = true)
+    public function format(bool $seperator = true): string
     {
         if (!$this->valid) {
             throw new OrganizationException();

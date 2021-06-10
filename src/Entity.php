@@ -3,9 +3,12 @@
 namespace Olssonm\SwedishEntity;
 
 use Olssonm\SwedishEntity\Exceptions\DetectException;
+use Olssonm\SwedishEntity\Traits\Clean;
 
 class Entity
 {
+    use Clean;
+
     /**
      * Detect if a number is an org-no or ssn
      *
