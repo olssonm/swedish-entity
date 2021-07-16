@@ -3,7 +3,6 @@
 namespace Olssonm\SwedishEntity;
 
 use Illuminate\Support\ServiceProvider;
-use Olssonm\SwedishEntity\Exceptions\DetectException;
 
 class SwedishEntityServiceProvider extends ServiceProvider
 {
@@ -17,19 +16,18 @@ class SwedishEntityServiceProvider extends ServiceProvider
         $this->app['validator']->extend('entity', function ($attribute, $value, $parameters): bool {
 
             $type = isset($parameters[0]) ? $parameters[0] : 'any';
-
             $object = null;
 
-            if ($type === 'any') {
-                try {
+            try {
+                if ($type === 'any') {
                     $object = Entity::detect($value);
-                } catch (DetectException $exception) {
-                    return false;
+                } elseif ($type === 'person') {
+                    $object = new Person($value);
+                } elseif ($type === 'organization') {
+                    $object = new Organization($value);
                 }
-            } elseif ($type === 'person') {
-                $object = new Person($value);
-            } elseif ($type === 'organization') {
-                $object = new Organization($value);
+            } catch (\Throwable $exception) {
+                return false;
             }
 
             return $object->valid();

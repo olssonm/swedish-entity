@@ -40,7 +40,7 @@ class Person
     /**
      * Constructor
      *
-     * @param string $ssn
+     * @param mixed $ssn
      * @param bool $allowCoordinationNumbers
      */
     public function __construct(string $ssn, $allowCoordinationNumbers = true)

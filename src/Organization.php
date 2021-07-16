@@ -30,7 +30,7 @@ class Organization
     /**
      * Constructor
      *
-     * @param string $orgNo
+     * @param mixed $orgNo
      */
     public function __construct(string $orgNo)
     {
