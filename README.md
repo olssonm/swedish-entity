@@ -127,6 +127,26 @@ $validator = Validator::make($request->all(), [
 ]);
 ```
 
+Implicit validation
+
+For the validator to run when the social security/organizational number is missing or an empty string (*note*, does not apply to `null`) you will need to implicitly state so with a required rule, i.e:
+
+```php
+'organization_number' => [
+    'required_with:company_name',
+    'entity:organization',
+], 
+```
+
+or 
+
+```php
+'organization_number' => [
+    'required',
+    'entity',
+], 
+```
+
 ## Attributes
 
 ### Person

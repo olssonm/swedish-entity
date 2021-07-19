@@ -11,8 +11,6 @@ use Olssonm\SwedishEntity\Person;
 use Olssonm\SwedishEntity\Exceptions\DetectException;
 use Olssonm\SwedishEntity\Exceptions\OrganizationException;
 use Olssonm\SwedishEntity\Exceptions\PersonException;
-use Olssonm\SwedishEntity\Helpers\Cleaner;
-use Personnummer\Personnummer;
 
 class SwedishEntityTest extends \Orchestra\Testbench\TestCase
 {
@@ -234,6 +232,28 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
     }
 
     /** @test */
+    public function testLaravelValidatorImplicit()
+    {
+        if (class_exists(Validator::class)) {
+            $this->assertTrue($this->validateLaravel('', 'organization'));
+            $this->assertTrue($this->validateLaravel('', 'any'));
+            $this->assertTrue($this->validateLaravel('', 'person'));
+
+            $this->assertFalse($this->validateLaravel(null, 'organization'));
+            $this->assertFalse($this->validateLaravel(null, 'any'));
+            $this->assertFalse($this->validateLaravel(null, 'person'));
+
+            $this->assertFalse($this->validateLaravelImplicit('', 'organization'));
+            $this->assertFalse($this->validateLaravelImplicit('', 'any'));
+            $this->assertFalse($this->validateLaravelImplicit('', 'person'));
+
+            $this->assertFalse($this->validateLaravelImplicit(null, 'organization'));
+            $this->assertFalse($this->validateLaravelImplicit(null, 'any'));
+            $this->assertFalse($this->validateLaravelImplicit(null, 'person'));
+        }
+    }
+
+    /** @test */
     public function testLaravelValidatorWithMessage()
     {
         if (class_exists(Validator::class)) {
@@ -281,6 +301,16 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
         $data = ['number' => $number];
         $validator = Validator::make($data, [
             'number' => sprintf('entity:%s', $type)
+        ]);
+
+        return $validator->passes();
+    }
+
+    private function validateLaravelImplicit($number, $type = null)
+    {
+        $data = ['number' => $number];
+        $validator = Validator::make($data, [
+            'number' => sprintf('required|entity:organization')
         ]);
 
         return $validator->passes();
