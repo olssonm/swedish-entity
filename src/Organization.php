@@ -139,8 +139,11 @@ class Organization
     protected function parseType(int $type): string
     {
         return [
+            0 => '',
             1 => 'Dödsbon',
             2 => 'Stat, landsting och kommuner',
+            3 => '',
+            4 => '',
             5 => 'Aktiebolag',
             6 => 'Enkelt bolag',
             7 => 'Ekonomiska föreningar',

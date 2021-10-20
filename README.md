@@ -186,7 +186,7 @@ $person->gender;
 | check     | The checksum verifier             | string    |
 | type      | Type of organisation<sup>*</sup>  | string    |
 
-<sup>*</sup>*One of the following: "Dödsbon", "Stat, landsting och kommuner", "Aktiebolag", "Enkelt bolag", "Ekonomiska föreningar", "Ideella föreningar och stiftelser" and "Handelsbolag, kommanditbolag och enkla bolag".*
+<sup>*</sup>*One of the following: "Dödsbon", "Stat, landsting och kommuner", "Aktiebolag", "Enkelt bolag", "Ekonomiska föreningar", "Ideella föreningar och stiftelser" and "Handelsbolag, kommanditbolag och enkla bolag". **Note:** Organizations starting with 0, 3 and 4, while technically a valid number – it is uncertain if they exist, and will return and empty string.*
 
 **Example**
 

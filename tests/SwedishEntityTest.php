@@ -167,6 +167,13 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
         $this->assertFalse((new Person('abcefghijklm'))->valid());
     }
 
+    public function testOrganizationMissingType()
+    {
+        $this->assertEquals('', (new Organization('012779-0293'))->type);
+        $this->assertEquals('', (new Organization('312779-0297'))->type);
+        $this->assertEquals('', (new Organization('412779-0295'))->type);
+    }
+
     /** @test */
     public function testSuccessfulDetect()
     {
