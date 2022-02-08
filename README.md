@@ -3,7 +3,6 @@
 [![Latest Version on Packagist][version-ico]][packagist-link]
 [![PHP version][php-ico]][packagist-link]
 [![Build Status][build-ico]][build-link]
-[![Scrutinizer Score][scrutinizer-ico]][scrutinizer-link]
 [![Software License][license-ico]](LICENSE.md)
 
 **Validate, format and extract data for Swedish personnummer (social security numbers) and organisationsnummer (organizational numbers).**
@@ -256,14 +255,12 @@ if($entity::class == Person::class) {
 
 The MIT License (MIT). Please see the [License File](LICENSE.md) for more information.
 
-© 2021 [Marcus Olsson](https://marcusolsson.me).
+© 2022 [Marcus Olsson](https://marcusolsson.me).
 
 [version-ico]: https://img.shields.io/packagist/v/olssonm/swedish-entity.svg?style=flat-square
 [build-ico]: https://img.shields.io/github/workflow/status/olssonm/swedish-entity/Run%20tests.svg?style=flat-square&label=tests
 [license-ico]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [php-ico]: https://img.shields.io/packagist/php-v/olssonm/swedish-entity.svg?style=flat-square
-[scrutinizer-ico]: https://img.shields.io/scrutinizer/g/olssonm/swedish-entity.svg?style=flat-square
 
 [packagist-link]: https://packagist.org/packages/olssonm/swedish-entity
 [build-link]: https://github.com/olssonm/swedish-entity/actions?query=workflow%3A%22Run+tests%22
-[scrutinizer-link]: https://scrutinizer-ci.com/g/olssonm/swedish-entity
