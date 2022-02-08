@@ -69,7 +69,7 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
         $this->assertEquals(11, $person1->day);
         $this->assertEquals(817, $person1->num);
         $this->assertEquals(7, $person1->check);
-        $this->assertEquals(Carbon::now()->setYear('1960')->diffInYears(Carbon::now()), $person1->age);
+        $this->assertEquals(Carbon::now()->setYear('1960')->diffInYears(Carbon::now()->setYear('2021')), $person1->age);
         $this->assertEquals('Personnummer', $person1->type);
         $this->assertEquals('Apr-11', $person1->birthday->format('M-d'));
         $this->assertEquals('male', $person1->gender);
