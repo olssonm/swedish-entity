@@ -258,7 +258,7 @@ The MIT License (MIT). Please see the [License File](LICENSE.md) for more inform
 © 2022 [Marcus Olsson](https://marcusolsson.me).
 
 [version-ico]: https://img.shields.io/packagist/v/olssonm/swedish-entity.svg?style=flat-square
-[build-ico]: https://img.shields.io/github/workflow/status/olssonm/swedish-entity/Run%20tests.svg?style=flat-square&label=tests
+[build-ico]: https://img.shields.io/github/actions/workflow/status/olssonm/swedish-entity/run-tests.yml?style=flat-square&label=tests
 [license-ico]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [php-ico]: https://img.shields.io/packagist/php-v/olssonm/swedish-entity.svg?style=flat-square
 
