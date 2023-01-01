@@ -62,6 +62,12 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
     public function testPersonAttributes()
     {
         $person1 = new Person('600411-8177');
+        $expectedAge = Carbon::now()
+            ->setYear('1960')
+            ->setMonth($person1->month)
+            ->setDay($person1->day)
+            ->diffInYears(Carbon::now());
+
         $this->assertEquals('600411-8177', $person1->ssn);
         $this->assertEquals(19, $person1->century);
         $this->assertEquals(60, $person1->year);
@@ -69,7 +75,7 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
         $this->assertEquals(11, $person1->day);
         $this->assertEquals(817, $person1->num);
         $this->assertEquals(7, $person1->check);
-        $this->assertEquals(Carbon::now()->setYear('1960')->diffInYears(Carbon::now()->setYear('2021')), $person1->age);
+        $this->assertEquals($expectedAge, $person1->age);
         $this->assertEquals('Personnummer', $person1->type);
         $this->assertEquals('Apr-11', $person1->birthday->format('M-d'));
         $this->assertEquals('male', $person1->gender);
