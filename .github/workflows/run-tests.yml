@@ -9,8 +9,10 @@ jobs:
         strategy:
             matrix:
                 include:
+                    - php: 8.2
+                      testbench: 8.*
                     - php: 8.1
-                      testbench: 7.*
+                      testbench: 8.*
                     - php: 8.0
                       testbench: 7.*
                     - php: 8.0
