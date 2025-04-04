@@ -95,8 +95,7 @@ use Olssonm\SwedishEntity\Organization;
 
 ### Laravel validators
 
-The package registrers the "entity" rule, which accepts the parameters `any`, `organization`, `person` or for special cases `person_only_coordination` and `person_only_ssn`. 
-
+The package registers the "entity" rule, which accepts the parameters `any`, `organization`, `person` or for special cases `person_only_coordination` and `person_only_ssn`.
 ```php
 <?php
 $this->validate($request, [
