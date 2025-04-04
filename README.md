@@ -95,7 +95,7 @@ use Olssonm\SwedishEntity\Organization;
 
 ### Laravel validators
 
-The package registrers the "entity" rule, which accepts the parameters `any`, `organization` or `person`. 
+The package registrers the "entity" rule, which accepts the parameters `any`, `organization`, `person` or for special cases `person_only_coordination` and `person_only_ssn`. 
 
 ```php
 <?php
@@ -113,7 +113,13 @@ $this->validate($request, [
 ]);
 ```
 
-Custom messages
+Use `person_only_coordination` and `person_only_ssn` if you for any reason *only* want to allow coordination numbers (samordningsnummer) and/or *only* SSN/personnummer.
+
+I.e. the coordination number `850361-8335` will validate with the rule `person_only_coordination`, while it will fail with `person_only_ssn`. 
+
+This is useful when validation against for instance BankID, as they do not allow coordination numbers at the moment.
+
+**Custom messages**
 
 ```php
 <?php
@@ -126,7 +132,7 @@ $validator = Validator::make($request->all(), [
 ]);
 ```
 
-Implicit validation
+**Implicit validation**
 
 For the validator to run when the social security/organizational number is missing or an empty string (*note*, does not apply to `null`) you will need to implicitly state so with a required rule, i.e:
 
@@ -255,7 +261,7 @@ if($entity::class == Person::class) {
 
 The MIT License (MIT). Please see the [License File](LICENSE.md) for more information.
 
-© 2022 [Marcus Olsson](https://marcusolsson.me).
+© 2022-2025 [Marcus Olsson](https://marcusolsson.me).
 
 [version-ico]: https://img.shields.io/packagist/v/olssonm/swedish-entity.svg?style=flat-square
 [build-ico]: https://img.shields.io/github/actions/workflow/status/olssonm/swedish-entity/run-tests.yml?style=flat-square&label=tests
