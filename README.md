@@ -257,6 +257,10 @@ if($entity::class == Person::class) {
 }
 ```
 
+## Other/misc.
+
+You can use [personnummer.se](https://personnummer.se) while working with this package and building your app to generate random Swedish personnummer/social security numbers.
+
 ## License
 
 The MIT License (MIT). Please see the [License File](LICENSE.md) for more information.
