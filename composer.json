@@ -22,8 +22,8 @@
         }
     ],
     "require": {
-        "php": "^7.3|^8.0",
-        "personnummer/personnummer": "^3.0.4"
+        "php": "^8.2",
+        "personnummer/personnummer": "^3.2"
     },
     "suggest": {
         "laravel/framework": "For Laravel-integration"
