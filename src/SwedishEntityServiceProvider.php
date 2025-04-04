@@ -23,6 +23,16 @@ class SwedishEntityServiceProvider extends ServiceProvider
                     $object = Entity::detect($value);
                 } elseif ($type === 'person') {
                     $object = new Person($value);
+                } elseif ($type === 'person_only_coordination') { // only ssn
+                    $object = new Person($value);
+                    if ($object->type == Person::PERSONNUMMER) {
+                        return false;
+                    }
+                } elseif ($type === 'person_only_ssn') { // only coordination number
+                    $object = new Person($value);
+                    if ($object->type == Person::SAMORDNINGSNUMMER) {
+                        return false;
+                    }
                 } elseif ($type === 'organization') {
                     $object = new Organization($value);
                 }
