@@ -37,6 +37,10 @@ class Person
      */
     protected $parts = [];
 
+    public const PERSONNUMMER = 'Personnummer';
+
+    public const SAMORDNINGSNUMMER = 'Samordningsnummer';
+
     /**
      * Constructor
      *
@@ -123,8 +127,8 @@ class Person
             'ssn' => $this->ssn,
             'birthday' => $this->getBirthday(),
             'type' => ($this->personnummer->isCoordinationNumber()) ?
-                'Samordningsnummer' :
-                'Personnummer'
+                self::SAMORDNINGSNUMMER :
+                self::PERSONNUMMER
         ];
     }
 

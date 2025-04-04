@@ -76,12 +76,12 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
         $this->assertEquals(817, $person1->num);
         $this->assertEquals(7, $person1->check);
         $this->assertEquals((int) $expectedAge, $person1->age);
-        $this->assertEquals('Personnummer', $person1->type);
+        $this->assertEquals(Person::PERSONNUMMER, $person1->type);
         $this->assertEquals('Apr-11', $person1->birthday->format('M-d'));
         $this->assertEquals('male', $person1->gender);
 
         $person2 = new Person('600471-8174');
-        $this->assertEquals('Samordningsnummer', $person2->type);
+        $this->assertEquals(Person::SAMORDNINGSNUMMER, $person2->type);
         $this->assertEquals('Apr-11', $person2->birthday->format('M-d'));
     }
 
@@ -241,6 +241,18 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
             $this->assertFalse($this->validateLaravel('aabbcc-ddee', 'any'));
             $this->assertFalse($this->validateLaravel('aabbccddee', 'organization'));
             $this->assertFalse($this->validateLaravel('00aabbccddee', 'person'));
+
+            // Only coordination
+            $this->assertTrue($this->validateLaravel('8503618335', 'person'));
+            $this->assertTrue($this->validateLaravel('19850361-8335', 'person_only_coordination'));
+            $this->assertTrue($this->validateLaravel('8503618335', 'person_only_coordination'));
+            $this->assertFalse($this->validateLaravel('8503618335', 'person_only_ssn'));
+
+            // Only ssn
+            $this->assertTrue($this->validateLaravel('6004118177', 'person'));
+            $this->assertTrue($this->validateLaravel('19600411-8177', 'person_only_ssn'));
+            $this->assertTrue($this->validateLaravel('6004118177', 'person_only_ssn'));
+            $this->assertFalse($this->validateLaravel('6004118177', 'person_only_coordination'));
         }
     }
 
