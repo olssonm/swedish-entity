@@ -71,7 +71,7 @@ class Organization
      */
     public function valid(): bool
     {
-        if (!preg_match("/^\d{6}[\-\/]?\d{4}+$/", $this->orgNo)) {
+        if (!preg_match('/^\d{6}-?\d{4}$/', $this->orgNo)) {
             return false;
         }
 
