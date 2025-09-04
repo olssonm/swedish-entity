@@ -133,6 +133,7 @@ class SwedishEntityTest extends \Orchestra\Testbench\TestCase
         $this->assertFalse((new Organization('556016-0681'))->valid());
         $this->assertFalse((new Organization('556103-4250'))->valid());
         $this->assertFalse((new Organization('5561034250'))->valid());
+        $this->assertFalse((new Organization('556103/4250'))->valid());
     }
 
     /** @test */
